@@ -26,6 +26,16 @@ type BiomeConfig struct {
 	MigratePrettier bool
 }
 
+func runCommandWithSpinner(s *spinner.Spinner, cmd *exec.Cmd, title, errMsg string) {
+	_ = s.Title(title).Action(func() {
+		output, err := cmd.CombinedOutput()
+		if err != nil {
+			fmt.Printf("%s: %s\n%s\n", errMsg, err.Error(), string(output))
+			os.Exit(1)
+		}
+	}).Run()
+}
+
 func main() {
 	var config BiomeConfig
 
@@ -76,43 +86,18 @@ func main() {
 			initCmd = exec.Command("bunx", "@biomejs/biome", "init")
 		}
 
-		_ = spinner.New().Title("Installing Biome...").Accessible(accessible).Action(func() {
-			output, err := installCmd.CombinedOutput()
-			if err != nil {
-				fmt.Printf("Error installing Biome: %s\n%s\n", err.Error(), string(output))
-				os.Exit(1)
-			}
-		}).Run()
-
-		_ = spinner.New().Title("Initializing Biome...").Accessible(accessible).Action(func() {
-			output, err := initCmd.CombinedOutput()
-			if err != nil {
-				fmt.Printf("Error initializing Biome: %s\n%s\n", err.Error(), string(output))
-				os.Exit(1)
-			}
-		}).Run()
+		runCommandWithSpinner(spinner.New().Accessible(accessible), installCmd, "Installing Biome...", "Error installing Biome")
+		runCommandWithSpinner(spinner.New().Accessible(accessible), initCmd, "Initializing Biome...", "Error initializing Biome")
 	}
 
 	if config.MigrateEslint {
 		cmd := exec.Command("biome", "migrate", "eslint", "--write")
-		_ = spinner.New().Title("Migrating Eslint...").Accessible(accessible).Action(func() {
-			output, err := cmd.CombinedOutput()
-			if err != nil {
-				fmt.Printf("Error migrating Eslint: %s\n%s\n", err.Error(), string(output))
-				os.Exit(1)
-			}
-		}).Run()
+		runCommandWithSpinner(spinner.New().Accessible(accessible), cmd, "Migrating Eslint...", "Error migrating Eslint")
 	}
 
 	if config.MigratePrettier {
 		cmd := exec.Command("biome", "migrate", "prettier", "--write")
-		_ = spinner.New().Title("Migrating Prettier...").Accessible(accessible).Action(func() {
-			output, err := cmd.CombinedOutput()
-			if err != nil {
-				fmt.Printf("Error migrating Prettier: %s\n%s\n", err.Error(), string(output))
-				os.Exit(1)
-			}
-		}).Run()
+		runCommandWithSpinner(spinner.New().Accessible(accessible), cmd, "Migrating Prettier...", "Error migrating Prettier")
 	}
 
 	fmt.Println("Biome setup complete.")
