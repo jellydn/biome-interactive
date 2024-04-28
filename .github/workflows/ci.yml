@@ -1,0 +1,48 @@
+name: CI
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: ">=1.21.0"
+
+      - name: Run tests
+        run: make test
+
+  linter:
+    strategy:
+      matrix:
+        go: ["1.21", "1.22"]
+        os: [macos-latest, windows-latest]
+    name: lint
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ matrix.go }}
+          cache: false
+      - name: go mod tidy
+        run: go mod tidy
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v5
+        with:
+          # Require: The version of golangci-lint to use.
+          version: latest
