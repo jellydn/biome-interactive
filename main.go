@@ -56,9 +56,10 @@ func runMigrationCommands(config BiomeConfig, accessible bool) {
 	}
 
 	if config.MigrateEslint {
-		runCommandWithSpinner(spinner.New().Accessible(accessible), eslintCmd, "Migrating Eslint...", "Error migrating Eslint")
+		runCommandWithSpinner(spinner.New().Accessible(accessible), eslintCmd, "Migrating Eslint...", "Error migrating Eslnt")
 	}
 
+	// TODO: Only JSON configurations are supported. Need to warn user before running the migration or convert the Prettier configuration to JSON.
 	if config.MigratePrettier {
 		runCommandWithSpinner(spinner.New().Accessible(accessible), prettierCmd, "Migrating Prettier...", "Error migrating Prettier")
 	}
