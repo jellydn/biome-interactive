@@ -15,11 +15,9 @@ cancelreader
 termenv
 rivo
 uniseg
-xstrings
-Charmburger
-Chickwich
-Fishburger
-Charmpossible
-Nutella
 biomejs
 bunx
+GOPATH
+Huynh
+kofi
+buymeacoffee
