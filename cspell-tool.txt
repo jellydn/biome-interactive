@@ -21,3 +21,5 @@ GOPATH
 Huynh
 kofi
 buymeacoffee
+
+goreleaser
