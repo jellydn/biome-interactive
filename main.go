@@ -36,6 +36,34 @@ func runCommandWithSpinner(s *spinner.Spinner, cmd *exec.Cmd, title, errMsg stri
 	}).Run()
 }
 
+func runMigrationCommands(config BiomeConfig, accessible bool) {
+	var eslintCmd *exec.Cmd
+	var prettierCmd *exec.Cmd
+
+	switch config.PackageManager {
+	case Npm:
+		eslintCmd = exec.Command("npx", "@biomejs/biome", "migrate", "eslint", "--write")
+		prettierCmd = exec.Command("npx", "@biomejs/biome", "migrate", "prettier", "--write")
+	case Pnpm:
+		eslintCmd = exec.Command("pnpm", "biome", "migrate", "eslint", "--write")
+		prettierCmd = exec.Command("pnpm", "biome", "migrate", "prettier", "--write")
+	case Yarn:
+		eslintCmd = exec.Command("yarn", "biome", "migrate", "eslint", "--write")
+		prettierCmd = exec.Command("yarn", "biome", "migrate", "prettier", "--write")
+	case Bun:
+		eslintCmd = exec.Command("bunx", "@biomejs/biome", "migrate", "eslint", "--write")
+		prettierCmd = exec.Command("bunx", "@biomejs/biome", "migrate", "prettier", "--write")
+	}
+
+	if config.MigrateEslint {
+		runCommandWithSpinner(spinner.New().Accessible(accessible), eslintCmd, "Migrating Eslint...", "Error migrating Eslint")
+	}
+
+	if config.MigratePrettier {
+		runCommandWithSpinner(spinner.New().Accessible(accessible), prettierCmd, "Migrating Prettier...", "Error migrating Prettier")
+	}
+}
+
 func main() {
 	var config BiomeConfig
 
@@ -90,15 +118,7 @@ func main() {
 		runCommandWithSpinner(spinner.New().Accessible(accessible), initCmd, "Initializing Biome...", "Error initializing Biome")
 	}
 
-	if config.MigrateEslint {
-		cmd := exec.Command("biome", "migrate", "eslint", "--write")
-		runCommandWithSpinner(spinner.New().Accessible(accessible), cmd, "Migrating Eslint...", "Error migrating Eslint")
-	}
-
-	if config.MigratePrettier {
-		cmd := exec.Command("biome", "migrate", "prettier", "--write")
-		runCommandWithSpinner(spinner.New().Accessible(accessible), cmd, "Migrating Prettier...", "Error migrating Prettier")
-	}
+	runMigrationCommands(config, accessible)
 
 	fmt.Println("Biome setup complete.")
 }
