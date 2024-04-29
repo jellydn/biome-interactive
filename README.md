@@ -7,12 +7,17 @@
 
 <!--toc:start-->
 
+- [Motivation](#motivation)
 - [Install](#install)
 - [Built with](#built-with)
 - [Author](#author)
 - [Show your support](#show-your-support)
 - [📝 License](#📝-license)
 <!--toc:end-->
+
+## Motivation
+
+Biome is a high-performance code formatter supporting JavaScript, TypeScript, JSX, and JSON, boasting a 97% compatibility rate with Prettier. To streamline the repetitive and time-consuming process of migrating from Eslint/Prettier to Biome, `biome-interactive` was developed. This CLI tool facilitates a consistent and error-free migration, enhancing both CI and development workflows.
 
 ## Install
 
@@ -33,17 +38,16 @@ This will install the `biome-interactive` binary to your `$GOPATH/bin` directory
 
 ### Manual
 
-You can download the binary for your operating system and architecture from the [releases](https://github.com/jellydn/biome-interactive/releases).
+Download the binary for your system from the [releases page](https://github.com/jellydn/biome-interactive/releases).
 
 ## Usage
 
-After installation, you can run `biome-interactive` from your terminal:
-
+Run the following command in your terminal:
 ```bash
 biome-interactive
 ```
 
-Follow the prompts to install Biome, initialize it, and migrate Eslint and Prettier.
+Follow the interactive prompts to install Biome, initialize it, and migrate configurations from Eslint and Prettier.
 
 [![Demo](https://i.gyazo.com/f8b4824b41019564a1fbbd33cd6f3fed.gif)](https://gyazo.com/f8b4824b41019564a1fbbd33cd6f3fed)
 
@@ -69,5 +73,5 @@ Give a ⭐️ if this project helped you!
 
 ## 📝 License
 
-Copyright © 2023 [Dung Huynh Duc <dung@productsway.com>](https://github.com/jelydn).<br />
+Copyright © 2024 [Dung Huynh Duc <dung@productsway.com>](https://github.com/jelydn).<br />
 This project is [MIT](https://github.com/jelydn/moleculer-connect/blob/master/LICENSE) licensed.
