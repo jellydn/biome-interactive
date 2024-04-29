@@ -3,21 +3,37 @@
   A simple interactive CLI to install Biome to your project.
 </p>
 
-## Prerequisites
+## Table of Contents
 
-You need to have Go installed on your machine. If you don't have it installed, you can download it from the [official website](https:/go.dev/dl/).
+<!--toc:start-->
 
-## Installation
+- [Install](#install)
+- [Built with](#built-with)
+- [Author](#author)
+- [Show your support](#show-your-support)
+- [📝 License](#📝-license)
+<!--toc:end-->
 
-Download the binary for your operating system and architecture from the [releases](https://github.com/jellydn/biome-interactive/releases).
+## Install
 
-Or you can install it using Go:
+### Using goblin.run
+
+```bash
+# goblin.run will build the binary and place it in PATH
+curl -sf http://goblin.run/github.com/jellydn/biome-interactive | sh
+```
+
+### Using Go
 
 ```bash
 go install github.com/jellydn/biome-interactive@latest
 ```
 
 This will install the `biome-interactive` binary to your `$GOPATH/bin` directory.
+
+### Manual
+
+You can download the binary for your operating system and architecture from the [releases](https://github.com/jellydn/biome-interactive/releases).
 
 ## Usage
 
