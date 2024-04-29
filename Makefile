@@ -13,6 +13,11 @@ test:
 	@echo "Running tests..."
 	@go test -v ./...
 
+.PHONY: tidy
+tidy:
+	@echo "Tidying up..."
+	@go mod tidy
+
 .PHONY: clean
 clean:
 	@echo "Cleaning up..."
@@ -26,6 +31,7 @@ help:
 	@echo "  dev    - Start development server"
 	@echo "  build  - Build binary"
 	@echo "  test   - Run tests"
+	@echo "  tidy   - Tidy up"
 	@echo "  clean  - Clean up"
 	@echo "  help   - Display this help message"
 	@echo ""
