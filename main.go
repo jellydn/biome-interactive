@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 	"os/exec"
@@ -22,8 +23,37 @@ const (
 type BiomeConfig struct {
 	PackageManager  PackageManager
 	InitBiome       bool
+	IntegrateVCS    bool
 	MigrateEslint   bool
 	MigratePrettier bool
+}
+
+type BiomeJSON struct {
+	Schema          *string    `json:"$schema,omitempty"`
+	OrganizeImports *Formatter `json:"organizeImports,omitempty"`
+	Vcs             *Vcs       `json:"vcs,omitempty"`
+	Linter          *Linter    `json:"linter,omitempty"`
+	Formatter       *Formatter `json:"formatter,omitempty"`
+}
+
+type Formatter struct {
+	Enabled bool `json:"enabled,omitempty"`
+}
+
+type Linter struct {
+	Enabled bool  `json:"enabled,omitempty"`
+	Rules   Rules `json:"rules,omitempty"`
+}
+
+type Rules struct {
+	Recommended bool `json:"recommended,omitempty"`
+}
+
+type Vcs struct {
+	Enabled       bool   `json:"enabled,omitempty"`
+	ClientKind    string `json:"clientKind,omitempty"`
+	UseIgnoreFile bool   `json:"useIgnoreFile,omitempty"`
+	DefaultBranch string `json:"defaultBranch,omitempty"`
 }
 
 func runCommandWithSpinner(s *spinner.Spinner, cmd *exec.Cmd, title, errMsg string) {
@@ -56,13 +86,53 @@ func runMigrationCommands(config BiomeConfig, accessible bool) {
 	}
 
 	if config.MigrateEslint {
-		runCommandWithSpinner(spinner.New().Accessible(accessible), eslintCmd, "Migrating Eslint...", "Error migrating Eslnt")
+		runCommandWithSpinner(spinner.New().Accessible(accessible), eslintCmd, "Migrating Eslint...", "Error migrating Eslint")
 	}
 
 	// TODO: Only JSON configurations are supported. Need to warn user before running the migration or convert the Prettier configuration to JSON.
 	if config.MigratePrettier {
 		runCommandWithSpinner(spinner.New().Accessible(accessible), prettierCmd, "Migrating Prettier...", "Error migrating Prettier")
 	}
+}
+
+func configureVersionControl() {
+	// Read biome.json file
+	biomeJsonData, readError := os.ReadFile("biome.json")
+	if readError != nil {
+		fmt.Println("Error reading biome.json:", readError)
+		os.Exit(1)
+	}
+
+	// Unmarshal JSON data
+	var biomeConfigJson BiomeJSON
+	parseError := json.Unmarshal(biomeJsonData, &biomeConfigJson)
+	if parseError != nil {
+		fmt.Println("Error parsing biome.json:", parseError)
+		os.Exit(1)
+	}
+
+	// Append the VCS configuration
+	biomeConfigJson.Vcs = &Vcs{
+		Enabled:       bool(true),
+		ClientKind:    "git",
+		UseIgnoreFile: bool(true),
+		DefaultBranch: "main",
+	}
+
+	// Marshal the updated configuration
+	updatedBiomeJsonData, marshalError := json.MarshalIndent(biomeConfigJson, "", "  ")
+	if marshalError != nil {
+		fmt.Println("Error generating updated biome.json:", marshalError)
+		os.Exit(1)
+	}
+
+	// Write the updated configuration back to biome.json
+	writeError := os.WriteFile("biome.json", updatedBiomeJsonData, 0644)
+	if writeError != nil {
+		fmt.Println("Error writing updated biome.json:", writeError)
+		os.Exit(1)
+	}
+
 }
 
 func main() {
@@ -81,7 +151,10 @@ func main() {
 				Title("Initialize Biome?").
 				Value(&config.InitBiome),
 			huh.NewConfirm().
-				Title("Migrate Eslint?").
+				Title("Integrate with Version Control System?").
+				Value(&config.IntegrateVCS),
+			huh.NewConfirm().
+				Title("Migrate ESlint?").
 				Value(&config.MigrateEslint),
 			huh.NewConfirm().
 				Title("Migrate Prettier?").
@@ -117,6 +190,10 @@ func main() {
 
 		runCommandWithSpinner(spinner.New().Accessible(accessible), installCmd, "Installing Biome...", "Error installing Biome")
 		runCommandWithSpinner(spinner.New().Accessible(accessible), initCmd, "Initializing Biome...", "Error initializing Biome")
+	}
+
+	if config.IntegrateVCS {
+		configureVersionControl()
 	}
 
 	runMigrationCommands(config, accessible)
