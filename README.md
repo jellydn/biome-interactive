@@ -43,13 +43,14 @@ Download the binary for your system from the [releases page](https://github.com/
 ## Usage
 
 Run the following command in your terminal:
+
 ```bash
 biome-interactive
 ```
 
 Follow the interactive prompts to install Biome, initialize it, and migrate configurations from Eslint and Prettier.
 
-[![Demo](https://i.gyazo.com/f8b4824b41019564a1fbbd33cd6f3fed.gif)](https://gyazo.com/f8b4824b41019564a1fbbd33cd6f3fed)
+[![Demo](https://i.gyazo.com/f0fa4c62b5614ca6e263766ad71774ac.gif)](https://gyazo.com/f0fa4c62b5614ca6e263766ad71774ac)
 
 ## Built with
 
