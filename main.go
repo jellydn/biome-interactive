@@ -198,5 +198,7 @@ func main() {
 
 	runMigrationCommands(config, accessible)
 
-	fmt.Println("Biome setup complete.")
+	fmt.Println("Biome setup is now complete.")
+	fmt.Println("For continuous integration and Git hooks, you can consult these recipes: https://biomejs.dev/recipes/continuous-integration/ and https://biomejs.dev/recipes/git-hooks/.")
+	fmt.Println("If you encounter any issues, we encourage you to report them at https://github.com/jellydn/biome-interactive.")
 }
