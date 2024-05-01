@@ -58,6 +58,13 @@ Follow the interactive prompts to install Biome, initialize it, and migrate conf
 - [GoReleaser](https://goreleaser.com/quick-start/)
 - [Biome](https://biomejs.dev/blog/biome-v1-7/)
 
+## Resources
+
+- [Integrate Biome with your VCS](https://biomejs.dev/guides/integrate-in-vcs/)
+- [Migrate from ESLint and Prettier](https://biomejs.dev/guides/migrate-eslint-prettier/)
+- [Continuous Integration](https://biomejs.dev/recipes/continuous-integration/)
+- [Git Hooks](https://biomejs.dev/recipes/git-hooks/)
+
 ## Author
 
 👤 **Dung Huynh Duc <dung@productsway.com>**
