@@ -198,7 +198,15 @@ func main() {
 
 	runMigrationCommands(config, accessible)
 
-	fmt.Println("Biome setup is now complete.")
-	fmt.Println("For continuous integration and Git hooks, you can consult these recipes: https://biomejs.dev/recipes/continuous-integration/ and https://biomejs.dev/recipes/git-hooks/.")
-	fmt.Println("If you encounter any issues, we encourage you to report them at https://github.com/jellydn/biome-interactive.")
+	fmt.Println("\nBiome setup is now complete. For more information, please visit:")
+	fmt.Println("\t- Get started: https://biomejs.dev/guides/getting-started/")
+	fmt.Println("\t- Migrate Eslint and Prettier: https://biomejs.dev/guides/migrate-eslint-prettier/")
+	fmt.Println("\nYou should check these recipes:")
+	fmt.Println("\t- Continuous Integration: https://biomejs.dev/recipes/continuous-integration/")
+	fmt.Println("\t- Git Hooks: https://biomejs.dev/recipes/git-hooks/")
+	fmt.Println("\nIf you encounter any issues, please open issue them at:")
+	fmt.Println("\t- https://github.com/jellydn/biome-interactive")
+	fmt.Println("\nContributions are welcome! If you would like to improve the project, feel free to open a pull request.")
+	fmt.Println("\nIt's time to remove EsLint and Prettier from your devDependencies and its config files. Enjoy using Biome!")
+
 }
