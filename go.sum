@@ -14,6 +14,8 @@ github.com/charmbracelet/huh/spinner v0.0.0-20240426165542-f922e26dffc1 h1:MJr+r
 github.com/charmbracelet/huh/spinner v0.0.0-20240426165542-f922e26dffc1/go.mod h1:nrBG0YEHaxdbqHXW1xvG1hPqkuac9Eg7RTMvogiXuz0=
 github.com/charmbracelet/huh/spinner v0.0.0-20240429193246-147e30b8a09c h1:44VEwiqrMr6NhU8v8+SBylBbsx9uSdMB7XzzDKFppiw=
 github.com/charmbracelet/huh/spinner v0.0.0-20240429193246-147e30b8a09c/go.mod h1:nrBG0YEHaxdbqHXW1xvG1hPqkuac9Eg7RTMvogiXuz0=
+github.com/charmbracelet/huh/spinner v0.0.0-20240501145744-1a310fe0c560 h1:zn03gcjaOpiAasPKzsmqR8jp4SNGkFnMP6AX4NyKpP0=
+github.com/charmbracelet/huh/spinner v0.0.0-20240501145744-1a310fe0c560/go.mod h1:nrBG0YEHaxdbqHXW1xvG1hPqkuac9Eg7RTMvogiXuz0=
 github.com/charmbracelet/lipgloss v0.10.0 h1:KWeXFSexGcfahHX+54URiZGkBFazf70JNMtwg/AFW3s=
 github.com/charmbracelet/lipgloss v0.10.0/go.mod h1:Wig9DSfvANsxqkRsqj6x87irdy123SR4dOXlKa91ciE=
 github.com/containerd/console v1.0.4 h1:F2g4+oChYvBTsASRTz8NP6iIAi97J3TtSAsLbIFn4ro=
