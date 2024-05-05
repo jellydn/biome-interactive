@@ -1,7 +1,9 @@
 <h1 align="center">Welcome to biome-interactive 👋</h1>
 <p>
-  A simple interactive CLI to install Biome to your project.
+  A simple interactive CLI to install Biome to your project. Migrate from ESLint and Prettier with a Single Command.
 </p>
+
+[![ITMan - Biome Interactive CLI - Migrate from ESLint and Prettier with a single command](https://i.ytimg.com/vi/fruvriN-Fpc/hqdefault.jpg)](https://www.youtube.com/watch?v=fruvriN-Fpc)
 
 ## Table of Contents
 
