@@ -20,11 +20,19 @@ const (
 	Bun  PackageManager = "bun"
 )
 
+type EslintMigrationStatus string
+
+const (
+	EslintNotMigrated       EslintMigrationStatus = "not migrated"
+	EslintMigrated          EslintMigrationStatus = "migrated"
+	EslintMigratedWithRules EslintMigrationStatus = "migrated with inspired rules"
+)
+
 type BiomeConfig struct {
 	PackageManager  PackageManager
 	InitBiome       bool
 	IntegrateVCS    bool
-	MigrateEslint   bool
+	MigrateEslint   EslintMigrationStatus
 	MigratePrettier bool
 }
 
@@ -66,31 +74,58 @@ func runCommandWithSpinner(s *spinner.Spinner, cmd *exec.Cmd, title, errMsg stri
 	}).Run()
 }
 
-func runMigrationCommands(config BiomeConfig, accessible bool) {
+func runEslintMigrateCommand(config BiomeConfig, accessible bool) {
 	var eslintCmd *exec.Cmd
-	var prettierCmd *exec.Cmd
+	if config.MigrateEslint != EslintNotMigrated {
+		switch config.PackageManager {
+		case Npm:
+			if config.MigrateEslint == EslintMigratedWithRules {
+				eslintCmd = exec.Command("npx", "@biomejs/biome", "migrate", "eslint", "--write", "--include-inspired")
+			} else {
+				eslintCmd = exec.Command("npx", "@biomejs/biome", "migrate", "eslint", "--write")
+			}
 
-	switch config.PackageManager {
-	case Npm:
-		eslintCmd = exec.Command("npx", "@biomejs/biome", "migrate", "eslint", "--write")
-		prettierCmd = exec.Command("npx", "@biomejs/biome", "migrate", "prettier", "--write")
-	case Pnpm:
-		eslintCmd = exec.Command("pnpm", "biome", "migrate", "eslint", "--write")
-		prettierCmd = exec.Command("pnpm", "biome", "migrate", "prettier", "--write")
-	case Yarn:
-		eslintCmd = exec.Command("yarn", "biome", "migrate", "eslint", "--write")
-		prettierCmd = exec.Command("yarn", "biome", "migrate", "prettier", "--write")
-	case Bun:
-		eslintCmd = exec.Command("bunx", "@biomejs/biome", "migrate", "eslint", "--write")
-		prettierCmd = exec.Command("bunx", "@biomejs/biome", "migrate", "prettier", "--write")
-	}
+		case Pnpm:
+			if config.MigrateEslint == EslintMigratedWithRules {
+				eslintCmd = exec.Command("pnpm", "biome", "migrate", "eslint", "--write", "--include-inspired")
+			} else {
+				eslintCmd = exec.Command("pnpm", "biome", "migrate", "eslint", "--write")
+			}
 
-	if config.MigrateEslint {
+		case Yarn:
+			if config.MigrateEslint == EslintMigratedWithRules {
+				eslintCmd = exec.Command("yarn", "biome", "migrate", "eslint", "--write", "--include-inspired")
+			} else {
+				eslintCmd = exec.Command("yarn", "biome", "migrate", "eslint", "--write")
+			}
+
+		case Bun:
+			if config.MigrateEslint == EslintMigratedWithRules {
+				eslintCmd = exec.Command("bunx", "@biomejs/biome", "migrate", "eslint", "--write", "--include-inspired")
+			} else {
+				eslintCmd = exec.Command("bunx", "@biomejs/biome", "migrate", "eslint", "--write")
+			}
+		}
 		runCommandWithSpinner(spinner.New().Accessible(accessible), eslintCmd, "Migrating Eslint...", "Error migrating Eslint")
 	}
+}
 
-	// TODO: Only JSON configurations are supported. Need to warn user before running the migration or convert the Prettier configuration to JSON.
+func runPrettierMigrateCommand(config BiomeConfig, accessible bool) {
+	var prettierCmd *exec.Cmd
+
 	if config.MigratePrettier {
+		switch config.PackageManager {
+		case Npm:
+			prettierCmd = exec.Command("npx", "@biomejs/biome", "migrate", "prettier", "--write")
+		case Pnpm:
+			prettierCmd = exec.Command("pnpm", "biome", "migrate", "prettier", "--write")
+		case Yarn:
+			prettierCmd = exec.Command("yarn", "biome", "migrate", "prettier", "--write")
+		case Bun:
+			prettierCmd = exec.Command("bunx", "@biomejs/biome", "migrate", "prettier", "--write")
+		}
+
+		// TODO: Only JSON configurations are supported. Need to warn user before running the migration or convert the Prettier configuration to JSON.
 		runCommandWithSpinner(spinner.New().Accessible(accessible), prettierCmd, "Migrating Prettier...", "Error migrating Prettier")
 	}
 }
@@ -153,8 +188,11 @@ func main() {
 			huh.NewConfirm().
 				Title("Integrate with Version Control System?").
 				Value(&config.IntegrateVCS),
-			huh.NewConfirm().
+			huh.NewSelect[EslintMigrationStatus]().
 				Title("Migrate ESlint?").
+				Options(
+					huh.NewOptions(EslintNotMigrated, EslintMigrated, EslintMigratedWithRules)...,
+				).
 				Value(&config.MigrateEslint),
 			huh.NewConfirm().
 				Title("Migrate Prettier?").
@@ -196,7 +234,8 @@ func main() {
 		configureVersionControl()
 	}
 
-	runMigrationCommands(config, accessible)
+	runEslintMigrateCommand(config, accessible)
+	runPrettierMigrateCommand(config, accessible)
 
 	fmt.Println("\nBiome setup is now complete. For more information, please visit:")
 	fmt.Println("\t- Get started: https://biomejs.dev/guides/getting-started/")
