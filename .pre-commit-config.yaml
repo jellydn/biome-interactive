@@ -10,5 +10,5 @@ repos:
     rev: "v0.1.0"
     hooks:
       - id: biome-check
-        additional_dependencies: ["@biomejs/biome@1.7.1"]
+        additional_dependencies: ["@biomejs/biome@1.8.1"]
         description: "Format, organize imports, lint, and apply safe fixes to the committed files"
