@@ -6,6 +6,7 @@ import (
 	"os"
 	"os/exec"
 	"strconv"
+	"strings"
 
 	"github.com/charmbracelet/huh"
 	"github.com/charmbracelet/huh/spinner"
@@ -65,6 +66,7 @@ type Vcs struct {
 }
 
 func runCommandWithSpinner(s *spinner.Spinner, cmd *exec.Cmd, title, errMsg string) {
+	fmt.Printf("Running command: %s\n", strings.Join(cmd.Args, " "))
 	_ = s.Title(title).Action(func() {
 		output, err := cmd.CombinedOutput()
 		if err != nil {
