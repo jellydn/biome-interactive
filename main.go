@@ -35,6 +35,7 @@ type BiomeConfig struct {
 	IntegrateVCS    bool
 	MigrateEslint   EslintMigrationStatus
 	MigratePrettier bool
+	Monorepo        bool
 }
 
 type BiomeJSON struct {
@@ -169,7 +170,6 @@ func configureVersionControl() {
 		fmt.Println("Error writing updated biome.json:", writeError)
 		os.Exit(1)
 	}
-
 }
 
 func main() {
@@ -184,6 +184,9 @@ func main() {
 				Options(huh.NewOptions(Npm, Pnpm, Yarn, Bun)...).
 				Title("Choose your package manager").
 				Value(&config.PackageManager),
+			huh.NewConfirm().
+				Title("Is this a monorepo?").
+				Value(&config.Monorepo),
 			huh.NewConfirm().
 				Title("Initialize Biome?").
 				Value(&config.InitBiome),
@@ -215,13 +218,25 @@ func main() {
 
 		switch config.PackageManager {
 		case Npm:
-			installCmd = exec.Command("npm", "install", "--save-dev", "--save-exact", "@biomejs/biome")
+			if config.Monorepo {
+				installCmd = exec.Command("npm", "install", "-W", "--save-dev", "--save-exact", "@biomejs/biome")
+			} else {
+				installCmd = exec.Command("npm", "install", "--save-dev", "--save-exact", "@biomejs/biome")
+			}
 			initCmd = exec.Command("npx", "@biomejs/biome", "init")
 		case Pnpm:
-			installCmd = exec.Command("pnpm", "add", "--save-dev", "--save-exact", "@biomejs/biome")
+			if config.Monorepo {
+				installCmd = exec.Command("pnpm", "add", "-r", "--save-dev", "--save-exact", "@biomejs/biome")
+			} else {
+				installCmd = exec.Command("pnpm", "add", "--save-dev", "--save-exact", "@biomejs/biome")
+			}
 			initCmd = exec.Command("pnpm", "biome", "init")
 		case Yarn:
-			installCmd = exec.Command("yarn", "add", "--dev", "--exact", "@biomejs/biome")
+			if config.Monorepo {
+				installCmd = exec.Command("yarn", "add", "-W", "--dev", "--exact", "@biomejs/biome")
+			} else {
+				installCmd = exec.Command("yarn", "add", "--dev", "--exact", "@biomejs/biome")
+			}
 			initCmd = exec.Command("yarn", "biome", "init")
 		case Bun:
 			installCmd = exec.Command("bun", "add", "--dev", "--exact", "@biomejs/biome")
@@ -249,5 +264,4 @@ func main() {
 	fmt.Println("\t- https://github.com/jellydn/biome-interactive")
 	fmt.Println("\nContributions are welcome! If you would like to improve the project, feel free to open a pull request.")
 	fmt.Println("\nIt's time to remove EsLint and Prettier from your devDependencies and its config files. Enjoy using Biome!")
-
 }

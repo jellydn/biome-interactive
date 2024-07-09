@@ -6,7 +6,7 @@ dev:
 .PHONY: build
 build:
 	@echo "Building binary..."
-	@go build -o bin/$(APP_NAME) main.go
+	@go build -o bin/biome-interactive main.go
 
 .PHONY: test
 test:
