@@ -21,7 +21,7 @@ require (
 	github.com/catppuccin/go v0.2.0 // indirect
 	github.com/charmbracelet/bubbles v0.18.0 // indirect
 	github.com/charmbracelet/bubbletea v0.26.4 // indirect
-	github.com/charmbracelet/huh/spinner v0.0.0-20240702124906-34ae8b72b63e
+	github.com/charmbracelet/huh/spinner v0.0.0-20240709222038-80fcf53648bd
 	github.com/charmbracelet/lipgloss v0.11.0 // indirect
 	github.com/lucasb-eyer/go-colorful v1.2.0 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
