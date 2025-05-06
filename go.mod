@@ -2,7 +2,7 @@ module github.com/jellydn/biome-interactive
 
 go 1.21
 
-toolchain go1.23.2
+toolchain go1.24.3
 
 require github.com/charmbracelet/huh v0.6.0
 
