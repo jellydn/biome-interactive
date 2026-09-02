@@ -4,7 +4,7 @@ go 1.21
 
 toolchain go1.23.2
 
-require github.com/charmbracelet/huh v0.6.0
+require github.com/charmbracelet/huh/v2 v2.0.3
 
 require (
 	github.com/charmbracelet/x/ansi v0.2.3 // indirect
