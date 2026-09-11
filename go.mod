@@ -4,7 +4,7 @@ go 1.23.0
 
 toolchain go1.23.2
 
-require github.com/charmbracelet/huh v0.8.0
+require github.com/charmbracelet/huh/v2 v2.0.3
 
 require (
 	github.com/charmbracelet/colorprofile v0.2.3-0.20250311203215-f60798e515dc // indirect
