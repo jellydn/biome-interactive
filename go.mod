@@ -2,7 +2,7 @@ module github.com/jellydn/biome-interactive
 
 go 1.24.2
 
-require github.com/charmbracelet/huh v0.8.0
+require github.com/charmbracelet/huh/v2 v2.0.3
 
 require (
 	github.com/charmbracelet/colorprofile v0.4.1 // indirect
